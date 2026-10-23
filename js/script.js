@@ -11,14 +11,17 @@ const guestCount = document.querySelector(".attendance");
 // alert when guest list is full (not yet visible)
 const guestFull = document.querySelector(".alert");
 
+const assignButton = document.querySelector(".assign");
+const assignedItems = document.querySelector(".assigned-items");
+
 addGuestButton.addEventListener("click", function () {
     const guest = guestInput.value;
     // console.log(guest);
     if (guest !== "") {
         addToList(guest);
         clearInput();
+        updateGuestCount();
     };
-    updateGuestCount();
 });
 
 const clearInput = function () {
@@ -41,3 +44,35 @@ const updateGuestCount = function () {
         guestFull.classList.remove("hide");
     };
 };
+
+const assignItems = function () {
+    const potluckItems = [
+        "Raspberry Pepper Jelly Cream Cheese Dip",
+        "Ham and Cheese Sliders",
+        "Classic Potato Salad",
+        "Caprese Skewers",
+        "Neiman Marcus Bars",
+        "White Sangria",
+        "Muffuletta",
+        "Coleslaw",
+        "Corn Dip",
+        "Key Lime Icebox Cake",
+        "Pico de Gallo",
+        "Slow Cooker Maple Jalapeño Pulled Pork Tacos"
+    ];
+
+    const allGuests = document.querySelectorAll(".guest-list li");
+    for (let guest of allGuests) {
+        let randomPotluckIndex = Math.floor(Math.random() * potluckItems.length);
+        let randomPotLuckItem = potluckItems[randomPotluckIndex];
+        let listItem = document.createElement("li");
+        listItem.innerText = `${guest.innerText} is bringing ${randomPotLuckItem}.`;
+        assignedItems.append(listItem);
+        potluckItems.splice(randomPotluckIndex, 1);
+    };
+};
+
+assignButton.addEventListener("click", function() {
+    assignItems();
+    assignButton.disabled = true;
+});
